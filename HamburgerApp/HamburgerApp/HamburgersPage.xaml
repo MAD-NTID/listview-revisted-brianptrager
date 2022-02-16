@@ -8,10 +8,19 @@
         <viewmodels:HamburgerViewModel />
     </ContentPage.BindingContext>
     <ListView 
+        ItemSelected="ListView_ItemSelected"
+        ItemTapped="ListView_ItemTapped"
+        CachingStrategy="RecycleElement"
         BackgroundColor="Transparent" 
-        ItemsSource="{Binding Hamburgers}"
+        ItemsSource="{Binding HamburgerGroups}"
+        IsGroupingEnabled="True"
+        GroupDisplayBinding="{Binding Key}"
         HasUnevenRows="True"
         SeparatorVisibility="None"
+        RefreshCommand="{Binding RefreshCommand}"
+        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+        IsPullToRefreshEnabled="True"
+        RefreshControlColor="Green"
         >
         <ListView.Header>
             <StackLayout Orientation="Horizontal">
@@ -26,6 +35,10 @@
         <ListView.ItemTemplate>
             <DataTemplate x:DataType="model:Hamburger">
                 <ViewCell>
+                    <ViewCell.ContextActions>
+                        <MenuItem Text="Favorite" Clicked="MenuItem_Clicked"/>
+                        <MenuItem Text="Delete" IsDestructive="True" />
+                    </ViewCell.ContextActions>
                     <Grid Padding="10">
                         <Frame CornerRadius="20" BackgroundColor="AntiqueWhite" HasShadow="True">
                             <StackLayout Orientation="Horizontal">
