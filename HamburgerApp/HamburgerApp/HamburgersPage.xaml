@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:HamburgerApp.ViewModels" 
+             xmlns:model="clr-namespace:HamburgerApp.Models"
+             x:Class="HamburgerApp.HamburgersPage">
+    <ContentPage.BindingContext>
+        <viewmodels:HamburgerViewModel />
+    </ContentPage.BindingContext>
+    <ListView 
+        BackgroundColor="Transparent" 
+        ItemsSource="{Binding Hamburgers}"
+        HasUnevenRows="True"
+        SeparatorVisibility="None"
+        >
+        <ListView.Header>
+            <StackLayout Orientation="Horizontal">
+                <Label BackgroundColor="Red" Text="Hamburgers" TextColor="White" FontSize="40" />
+            </StackLayout>
+        </ListView.Header>
+        <ListView.Footer>
+            <StackLayout Orientation="Horizontal">
+            <Button Text="Load More" HorizontalOptions="Center"/>
+            </StackLayout>
+        </ListView.Footer>
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="model:Hamburger">
+                <ViewCell>
+                    <Grid Padding="10">
+                        <Frame CornerRadius="20" BackgroundColor="AntiqueWhite" HasShadow="True">
+                            <StackLayout Orientation="Horizontal">
+                                <Image 
+                                    Source="{Binding Image}" 
+                                    HorizontalOptions="Center"
+                                    WidthRequest="66"
+                                    />
+                                <StackLayout VerticalOptions="Center">
+                                    <Label 
+                                    Text="{Binding Name}" 
+                                    VerticalOptions="Center"
+                                    FontSize="Large"/>
+                                    <Label 
+                                    Text="{Binding RestuarantName}" 
+                                    VerticalOptions="Center"
+                                    FontSize="Medium"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>
