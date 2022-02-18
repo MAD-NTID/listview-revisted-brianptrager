@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:viewmodels="clr-namespace:HamburgerApp.ViewModels" 
              xmlns:model="clr-namespace:HamburgerApp.Models"
-             x:Class="HamburgerApp.HamburgersPage">
+             x:Class="HamburgerApp.HamburgersPage"
+             x:Name="HamburgersPage">
     <ContentPage.BindingContext>
         <viewmodels:HamburgerViewModel />
     </ContentPage.BindingContext>
     <ListView 
-        ItemSelected="ListView_ItemSelected"
-        ItemTapped="ListView_ItemTapped"
+        SelectedItem="{Binding SelectedHamburger, Mode=TwoWay}"
         CachingStrategy="RecycleElement"
         BackgroundColor="Transparent" 
         ItemsSource="{Binding HamburgerGroups}"
@@ -36,7 +36,8 @@
             <DataTemplate x:DataType="model:Hamburger">
                 <ViewCell>
                     <ViewCell.ContextActions>
-                        <MenuItem Text="Favorite" Clicked="MenuItem_Clicked"/>
+                        <MenuItem Text="Favorite" CommandParameter="{Binding .}"
+                                  Command="{Binding Source={x:Reference HamburgersPage}, Path=BindingContext.FavoriteCommand}" />
                         <MenuItem Text="Delete" IsDestructive="True" />
                     </ViewCell.ContextActions>
                     <Grid Padding="10">

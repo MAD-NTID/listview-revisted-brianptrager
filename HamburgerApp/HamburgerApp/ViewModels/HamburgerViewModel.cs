@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace HamburgerApp.ViewModels
 {
@@ -14,6 +15,31 @@ namespace HamburgerApp.ViewModels
         public ObservableRangeCollection<Grouping<string, Hamburger>> HamburgerGroups { get; set; }
         
         public AsyncCommand RefreshCommand { get; set; }
+        public AsyncCommand<Hamburger> FavoriteCommand { get; set; }
+
+        Hamburger selectedHamburger;
+        Hamburger previouslySelected;
+        public Hamburger SelectedHamburger
+        {
+            get => selectedHamburger;
+            set
+            {
+                if(value != null)
+                {
+                    if (value != previouslySelected)
+                    {
+                        selectedHamburger = value;
+                        Application.Current.MainPage.DisplayAlert("Selected Hamburger", selectedHamburger.Name, "OK");
+                        previouslySelected = value;
+                        value = null;
+                    }
+                }
+
+                selectedHamburger = null;
+                OnPropertyChanged();
+            }
+        }
+
         public HamburgerViewModel()
         {
             Title = "Hamburgers";
@@ -22,6 +48,7 @@ namespace HamburgerApp.ViewModels
             HamburgerGroups = new ObservableRangeCollection<Grouping<string, Hamburger>>();
 
             RefreshCommand = new AsyncCommand(OnRefresh);
+            FavoriteCommand = new AsyncCommand<Hamburger>(Favorite);
 
             LoadData();
 
@@ -37,6 +64,14 @@ namespace HamburgerApp.ViewModels
             IsBusy = false;
         }
 
+        async Task Favorite(Hamburger hamburger)
+        {
+            if (hamburger == null)
+                return;
+
+            await Application.Current.MainPage.DisplayAlert("Selected Hamburger", hamburger.Name, "OK");
+
+        }
 
         private void LoadData()
         {
