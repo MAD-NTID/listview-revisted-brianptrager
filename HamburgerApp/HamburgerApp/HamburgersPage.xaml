@@ -1,48 +1,83 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              xmlns:viewmodels="clr-namespace:HamburgerApp.ViewModels" 
              xmlns:model="clr-namespace:HamburgerApp.Models"
-             x:Class="HamburgerApp.HamburgersPage"
-             x:Name="HamburgersPage">
+             x:Class="HamburgerApp.HamburgersPage">
     <ContentPage.BindingContext>
         <viewmodels:HamburgerViewModel />
     </ContentPage.BindingContext>
-    <ListView 
-        SelectedItem="{Binding SelectedHamburger, Mode=TwoWay}"
-        CachingStrategy="RecycleElement"
-        BackgroundColor="Transparent" 
-        ItemsSource="{Binding HamburgerGroups}"
-        IsGroupingEnabled="True"
-        GroupDisplayBinding="{Binding Key}"
-        HasUnevenRows="True"
-        SeparatorVisibility="None"
-        RefreshCommand="{Binding RefreshCommand}"
+
+    <RefreshView 
+        Command="{Binding RefreshCommand}"
         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-        IsPullToRefreshEnabled="True"
-        RefreshControlColor="Green"
+        RefreshColor="Green">
+        <CollectionView
+            SelectionMode="Single"          
+            SelectedItem="{Binding SelectedHamburger, Mode=TwoWay}"
+            BackgroundColor="PaleGreen" 
+            ItemsSource="{Binding HamburgerGroups}"
+            IsGrouped="True"
+            ItemSizingStrategy="MeasureAllItems"
         >
-        <ListView.Header>
-            <StackLayout Orientation="Horizontal">
-                <Label BackgroundColor="Red" Text="Hamburgers" TextColor="White" FontSize="40" />
-            </StackLayout>
-        </ListView.Header>
-        <ListView.Footer>
-            <StackLayout Orientation="Horizontal">
-            <Button Text="Load More" HorizontalOptions="Center"/>
-            </StackLayout>
-        </ListView.Footer>
-        <ListView.ItemTemplate>
-            <DataTemplate x:DataType="model:Hamburger">
-                <ViewCell>
-                    <ViewCell.ContextActions>
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            
+            <CollectionView.EmptyView>
+                <Label Text="No data available" HorizontalOptions="Center" />
+            </CollectionView.EmptyView>
+            
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding Key}" FontSize="Large" FontFamily="Arial" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+            
+            <CollectionView.HeaderTemplate>
+                <DataTemplate>
+                    <StackLayout Margin="10,5">
+                        <Label BackgroundColor="Red" Text="Hamburgers" TextColor="White" FontSize="40" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.HeaderTemplate>
+            <!--
+        </CollectionView.HeaderTemplate>
+        <CollectionView.FooterTemplate>
+            <DataTemplate>
+                <Button Text="Load More" HorizontalOptions="Center"/>
+            </DataTemplate>
+        </CollectionView.FooterTemplate>
+        
+        <ViewCell.ContextActions>
                         <MenuItem Text="Favorite" CommandParameter="{Binding .}"
-                                  Command="{Binding Source={x:Reference HamburgersPage}, Path=BindingContext.FavoriteCommand}" />
+                                   />
                         <MenuItem Text="Delete" IsDestructive="True" />
                     </ViewCell.ContextActions>
-                    <Grid Padding="10">
-                        <Frame CornerRadius="20" BackgroundColor="AntiqueWhite" HasShadow="True">
-                            <StackLayout Orientation="Horizontal">
+        -->
+           
+            <CollectionView.ItemTemplate>
+                
+                <DataTemplate x:DataType="model:Hamburger">
+
+                    <Grid Padding="5">
+                        <SwipeView android:SwipeView.SwipeTransitionMode="Drag" BackgroundColor="Transparent">
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    
+                                    <SwipeItem Text="Favorite"
+                                                        BackgroundColor="Orange"
+                                            />
+                                    <SwipeItem Text="Delete"
+                                                       IsDestructive="True"
+                                                        BackgroundColor="Red"
+                                            />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame  BackgroundColor="AntiqueWhite" HasShadow="True">
+                            
+                                <StackLayout Orientation="Horizontal">
                                 <Image 
                                     Source="{Binding Image}" 
                                     HorizontalOptions="Center"
@@ -58,11 +93,18 @@
                                     VerticalOptions="Center"
                                     FontSize="Medium"/>
                                 </StackLayout>
+                                
+                                
                             </StackLayout>
+                            
                         </Frame>
+                        </SwipeView>
+                            
+                                
                     </Grid>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+    
 </ContentPage>

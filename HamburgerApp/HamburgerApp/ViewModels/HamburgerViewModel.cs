@@ -58,7 +58,7 @@ namespace HamburgerApp.ViewModels
         async Task OnRefresh()
         {
             IsBusy = true;
-
+            LoadData();
             await Task.Delay(2000);
 
             IsBusy = false;
