@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using HamburgerApp.Services;
 
 namespace HamburgerApp.ViewModels
 {
@@ -58,7 +59,7 @@ namespace HamburgerApp.ViewModels
         async Task OnRefresh()
         {
             IsBusy = true;
-
+            LoadData();
             await Task.Delay(2000);
 
             IsBusy = false;
@@ -73,7 +74,7 @@ namespace HamburgerApp.ViewModels
 
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
             var image = "hamburger.png";
             var tmpList = new List<Hamburger>()
@@ -87,6 +88,7 @@ namespace HamburgerApp.ViewModels
                 new Hamburger() { Name = "Butter Burger", RestuarantName = "Culver's", Image = image }
             };
 
+            await HamburgerService.AddHamburger("Quarter Pounder", "McDonald's");
             Hamburgers.AddRange(tmpList);
             //System.Threading.Thread.Sleep(500);
 

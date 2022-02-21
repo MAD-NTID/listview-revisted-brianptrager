@@ -3,6 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HamburgerApp.App">
     <Application.Resources>
+        <Color x:Key="RefreshColor">Green</Color>
+        <Color x:Key="CVBackground">PaleGreen</Color>
+        <Color x:Key="ButtonColor">Beige</Color>
+        <Color x:Key="BorderColor">Brown</Color>
 
+        <Style x:Key="PrimaryFont" TargetType="Label">
+            <Setter Property="FontFamily" Value="Arial" /> <!-- Not reliable -->
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="Large" />
+        </Style>
+
+        <Style TargetType="Frame">
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="CornerRadius" Value="15" />
+            <Setter Property="BackgroundColor" Value="{StaticResource ButtonColor}" />
+            <Setter Property="BorderColor" Value="{StaticResource BorderColor}" />
+        </Style>
+
+        <Style x:Key="aButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource ButtonColor}" />
+            <Setter Property="WidthRequest" Value="100" />
+            <Setter Property="TextColor" Value="{StaticResource BorderColor}" />
+            <Setter Property="BorderColor" Value="{StaticResource BorderColor}" />
+            <Setter Property="BorderWidth" Value="2" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <Style x:Key="bButton" TargetType="Button" BasedOn="{StaticResource aButton}">
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="DarkBlue" />
+        </Style>
     </Application.Resources>
 </Application>
