@@ -14,9 +14,13 @@ namespace HamburgerApp.ViewModels
     {
         public ObservableRangeCollection<Hamburger> Hamburgers { get; set; }
         public ObservableRangeCollection<Grouping<string, Hamburger>> HamburgerGroups { get; set; }
-        
+
         public AsyncCommand RefreshCommand { get; set; }
         public AsyncCommand<Hamburger> FavoriteCommand { get; set; }
+        public AsyncCommand LoadMoreCommand { get; set; }
+        public AsyncCommand AddCommand { get; set; }
+        public AsyncCommand<Hamburger> DeleteCommand { get; set; }
+        public AsyncCommand ThanosCommand { set; get; }
 
         Hamburger selectedHamburger;
         Hamburger previouslySelected;
@@ -30,7 +34,7 @@ namespace HamburgerApp.ViewModels
                     if (value != previouslySelected)
                     {
                         selectedHamburger = value;
-                        Application.Current.MainPage.DisplayAlert("Selected Hamburger", selectedHamburger.Name, "OK");
+                        Application.Current.MainPage.DisplayAlert("Selected Hamburger", selectedHamburger.Image, "OK");
                         previouslySelected = value;
                         value = null;
                     }
@@ -48,19 +52,52 @@ namespace HamburgerApp.ViewModels
             Hamburgers = new ObservableRangeCollection<Hamburger>();
             HamburgerGroups = new ObservableRangeCollection<Grouping<string, Hamburger>>();
 
-            RefreshCommand = new AsyncCommand(OnRefresh);
+            AddCommand = new AsyncCommand(AddHamburger);
+            LoadMoreCommand = new AsyncCommand(LoadMore);
+            RefreshCommand = new AsyncCommand(Refresh);
             FavoriteCommand = new AsyncCommand<Hamburger>(Favorite);
+            DeleteCommand = new AsyncCommand<Hamburger>(DeleteHamburger);
+            ThanosCommand = new AsyncCommand(DeleteAllHamburgers); 
 
             LoadData();
 
             //Hamburgers.Add(new Hamburger() { Name = "Butter Burger", RestuarantName = "Culver's", Image = "hamburger.png" });
         }
 
-        async Task OnRefresh()
+        private async Task DeleteAllHamburgers()
+        {
+            await HamburgerService.RemoveHamburgers();
+            await Refresh();
+        }
+
+        private async Task DeleteHamburger(Hamburger hamburger)
+        {
+            await HamburgerService.RemoveHamburger(hamburger.Id);
+            await Refresh();
+        }
+
+        private async Task AddHamburger()
+        {
+            var hamburgerName = await App.Current.MainPage.DisplayPromptAsync
+                ("Add Hamburger", "Enter the name of the hamburger", "OK", 
+                "Forget it", "Type hamburger name here");
+            var restuarantName = await App.Current.MainPage.DisplayPromptAsync("Add Hamburger", "Enter the name of the resturant", "OK", "Forget it", "Type restuarant name here");
+            await HamburgerService.AddHamburger(hamburgerName, restuarantName);
+            await Refresh();
+        }
+
+        private async Task LoadMore()
+        {
+            await LoadData();
+            await Task.Delay(100);
+        }
+
+        async Task Refresh()
         {
             IsBusy = true;
-            LoadData();
-            await Task.Delay(2000);
+
+            Hamburgers.Clear();
+            await LoadData();
 
             IsBusy = false;
         }
@@ -76,24 +113,8 @@ namespace HamburgerApp.ViewModels
 
         private async Task LoadData()
         {
-            var image = "hamburger.png";
-            var tmpList = new List<Hamburger>()
-            {
-                new Hamburger(){Name="Quarter Pounder", RestuarantName="McDonald's", Image=image},
-                new Hamburger(){Name="Big Mac", RestuarantName="McDonald's", Image=image},
-                new Hamburger(){Name="Whopper", RestuarantName="Burger King", Image=image},
-                new Hamburger(){Name="Whopper Jr.", RestuarantName="Burger King", Image=image},
-                new Hamburger(){Name="Stacker King", RestuarantName="Burger King", Image=image},
-                new Hamburger(){Name="Little Cheeseburger", RestuarantName="Five Guys", Image=image},
-                new Hamburger() { Name = "Butter Burger", RestuarantName = "Culver's", Image = image }
-            };
-
-            await HamburgerService.AddHamburger("Quarter Pounder", "McDonald's");
-            Hamburgers.AddRange(tmpList);
-            //System.Threading.Thread.Sleep(500);
-
-            HamburgerGroups.Add(new Grouping<string, Hamburger>("McDonald's", new[] { Hamburgers[0], Hamburgers[1] }));
-            HamburgerGroups.Add(new Grouping<string, Hamburger>("Burger King", new[] { Hamburgers[2], Hamburgers[3], Hamburgers[4] }));
+            var hamburgers = await HamburgerService.GetHamburgers();
+            Hamburgers.AddRange(hamburgers);
         }
     }
 }

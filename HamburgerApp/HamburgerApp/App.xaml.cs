@@ -10,7 +10,7 @@ namespace HamburgerApp
         {
             InitializeComponent();
 
-            MainPage = new HamburgersPage();
+            MainPage = new NavigationPage(new HamburgersPage());
         }
 
         protected override void OnStart()

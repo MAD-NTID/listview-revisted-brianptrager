@@ -4,7 +4,8 @@
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              xmlns:viewmodels="clr-namespace:HamburgerApp.ViewModels" 
              xmlns:model="clr-namespace:HamburgerApp.Models"
-             x:Class="HamburgerApp.HamburgersPage">
+             x:Class="HamburgerApp.HamburgersPage"
+             x:Name="HamburgersList">
     <ContentPage.BindingContext>
         <viewmodels:HamburgerViewModel />
     </ContentPage.BindingContext>
@@ -14,6 +15,10 @@
             <Setter Property="ItemSizingStrategy" Value="MeasureAllItems" />
         </Style>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Priority="0" Order="Primary" Command="{Binding AddCommand}"/>
+        <ToolbarItem Text="Delete All" Priority="1" Order="Primary" Command="{Binding ThanosCommand}"/>
+    </ContentPage.ToolbarItems>
     <RefreshView 
         Command="{Binding RefreshCommand}"
         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
@@ -21,8 +26,8 @@
         <CollectionView 
             SelectionMode="Single"          
             SelectedItem="{Binding SelectedHamburger, Mode=TwoWay}"
-            ItemsSource="{Binding HamburgerGroups}"
-            IsGrouped="True"
+            ItemsSource="{Binding Hamburgers}"
+            IsGrouped="False"
         >
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
@@ -31,7 +36,7 @@
             <CollectionView.EmptyView>
                 <Label Text="No data available" HorizontalOptions="Center" />
             </CollectionView.EmptyView>
-            
+            <!--
             <CollectionView.GroupHeaderTemplate>
                 <DataTemplate>
                     <Label Text="{Binding Key}" FontSize="Large" FontFamily="Arial" FontAttributes="Bold" HorizontalTextAlignment="Center" />
@@ -45,6 +50,7 @@
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.HeaderTemplate>
+            -->
             <!--
         </CollectionView.HeaderTemplate>
         <CollectionView.FooterTemplate>
@@ -68,50 +74,46 @@
                         <SwipeView android:SwipeView.SwipeTransitionMode="Drag" BackgroundColor="Transparent">
                             <SwipeView.RightItems>
                                 <SwipeItems>
-                                    
+
                                     <SwipeItem Text="Favorite"
-                                                        BackgroundColor="Orange"
+                                               BackgroundColor="Orange"
+                                               
                                             />
                                     <SwipeItem Text="Delete"
-                                                       IsDestructive="True"
-                                                        BackgroundColor="Red"
+                                               IsDestructive="True"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={x:Reference HamburgersList}, Path=BindingContext.DeleteCommand}"
+                                               CommandParameter="{Binding .}"
                                             />
                                 </SwipeItems>
                             </SwipeView.RightItems>
                             <Frame>
-                            
+
                                 <StackLayout Orientation="Horizontal">
-                                <Image 
+                                    <Image 
                                     Source="{Binding Image}" 
                                     HorizontalOptions="Center"
                                     WidthRequest="66"
                                     />
-                                <StackLayout VerticalOptions="Center">
-                                    <Label Style="{StaticResource PrimaryFont}"
+                                    <StackLayout VerticalOptions="Center">
+                                        <Label Style="{StaticResource PrimaryFont}"
                                     Text="{Binding Name}" 
                                     VerticalOptions="Center"
                                     />
-                                    <Label 
+                                        <Label 
                                     Text="{Binding RestuarantName}" 
                                     VerticalOptions="Center"
                                     FontSize="Medium"/>
+                                    </StackLayout>
                                 </StackLayout>
-                                
-                                
-                            </StackLayout>
-                            
+
                             </Frame>
                         </SwipeView>
-                            
-                                
-                        </SwipeView>
-                            
-                                
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.Footer>
-                <Button Style="{StaticResource bButton}" Text="Load" />
+                <Button Style="{StaticResource bButton}" Text="Load" Command="{Binding LoadMoreCommand}" />
             </CollectionView.Footer>
         </CollectionView>
     </RefreshView>
