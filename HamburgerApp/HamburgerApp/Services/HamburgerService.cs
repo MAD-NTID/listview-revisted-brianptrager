@@ -31,7 +31,7 @@ namespace HamburgerApp.Services
         {
             await Init();
             //Promise to discuss about image on Monday
-            var image = "someimage.png";
+            var image = "https://people.rit.edu/bptnbs/hamburger.png";
 
             var hamburger = new Hamburger()
             {
