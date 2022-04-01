@@ -59,7 +59,7 @@ namespace HamburgerApp.ViewModels
             DeleteCommand = new AsyncCommand<Hamburger>(DeleteHamburger);
             ThanosCommand = new AsyncCommand(DeleteAllHamburgers); 
 
-            LoadData();
+            Refresh();
 
             //Hamburgers.Add(new Hamburger() { Name = "Butter Burger", RestuarantName = "Culver's", Image = "hamburger.png" });
         }
@@ -88,8 +88,8 @@ namespace HamburgerApp.ViewModels
 
         private async Task LoadMore()
         {
-            await LoadData();
-            await Task.Delay(100);
+            await HamburgerService.AddHamburger("World's Greatest Cheeseburger", "Bill Gray's");
+            await Refresh();
         }
 
         async Task Refresh()
@@ -97,7 +97,9 @@ namespace HamburgerApp.ViewModels
             IsBusy = true;
 
             Hamburgers.Clear();
-            await LoadData();
+            
+            var hamburgers = await HamburgerService.GetHamburgers();
+            Hamburgers.AddRange(hamburgers);
 
             IsBusy = false;
         }
@@ -109,12 +111,6 @@ namespace HamburgerApp.ViewModels
 
             await Application.Current.MainPage.DisplayAlert("Selected Hamburger", hamburger.Name, "OK");
 
-        }
-
-        private async Task LoadData()
-        {
-            var hamburgers = await HamburgerService.GetHamburgers();
-            Hamburgers.AddRange(hamburgers);
         }
     }
 }

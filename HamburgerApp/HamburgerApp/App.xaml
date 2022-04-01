@@ -4,7 +4,8 @@
              x:Class="HamburgerApp.App">
     <Application.Resources>
         <Color x:Key="RefreshColor">Green</Color>
-        <Color x:Key="CVBackground">PaleGreen</Color>
+        <Color x:Key="AppBackgroundLight">PaleGreen</Color>
+        <Color x:Key="AppBackgroundDark">#111111</Color>
         <Color x:Key="ButtonColor">Beige</Color>
         <Color x:Key="BorderColor">Brown</Color>
 

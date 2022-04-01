@@ -28,6 +28,7 @@
             SelectedItem="{Binding SelectedHamburger, Mode=TwoWay}"
             ItemsSource="{Binding Hamburgers}"
             IsGrouped="False"
+            Background="{AppThemeBinding Dark={StaticResource AppBackgroundDark}, Light={StaticResource AppBackgroundLight}}"
         >
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="5" Orientation="Vertical" />
@@ -87,7 +88,7 @@
                                             />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <Frame>
+                            <Frame BackgroundColor="{AppThemeBinding Dark=#111111, Light=#FFFFFF}">
 
                                 <StackLayout Orientation="Horizontal">
                                     <Image 
@@ -99,11 +100,13 @@
                                         <Label Style="{StaticResource PrimaryFont}"
                                     Text="{Binding Name}" 
                                     VerticalOptions="Center"
+                                               TextColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}"
                                     />
                                         <Label 
                                     Text="{Binding RestuarantName}" 
                                     VerticalOptions="Center"
-                                    FontSize="Medium"/>
+                                    FontSize="Medium"
+                                            TextColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}"/>
                                     </StackLayout>
                                 </StackLayout>
 
