@@ -21,6 +21,7 @@ namespace HamburgerApp.ViewModels
         public AsyncCommand AddCommand { get; set; }
         public AsyncCommand<Hamburger> DeleteCommand { get; set; }
         public AsyncCommand ThanosCommand { set; get; }
+        public AsyncCommand<String> NavigateCommand { get; set; }
 
         Hamburger selectedHamburger;
         Hamburger previouslySelected;
@@ -57,11 +58,21 @@ namespace HamburgerApp.ViewModels
             RefreshCommand = new AsyncCommand(Refresh);
             FavoriteCommand = new AsyncCommand<Hamburger>(Favorite);
             DeleteCommand = new AsyncCommand<Hamburger>(DeleteHamburger);
-            ThanosCommand = new AsyncCommand(DeleteAllHamburgers); 
-
-            Refresh();
-
+            ThanosCommand = new AsyncCommand(DeleteAllHamburgers);
+            NavigateCommand = new AsyncCommand<String>(NavigateToPage);
             //Hamburgers.Add(new Hamburger() { Name = "Butter Burger", RestuarantName = "Culver's", Image = "hamburger.png" });
+        }
+
+        private async Task NavigateToPage(String dest)
+        {
+            Page page = null;
+            switch(dest)
+            {
+                case "AddHamburgerPage": page = new AddHamburgerPage();
+                    break;
+                //add other pages here
+            }
+            await App.Current.MainPage.Navigation.PushAsync(page);
         }
 
         private async Task DeleteAllHamburgers()
@@ -78,12 +89,13 @@ namespace HamburgerApp.ViewModels
 
         private async Task AddHamburger()
         {
-            var hamburgerName = await App.Current.MainPage.DisplayPromptAsync
-                ("Add Hamburger", "Enter the name of the hamburger", "OK", 
-                "Forget it", "Type hamburger name here");
-            var restuarantName = await App.Current.MainPage.DisplayPromptAsync("Add Hamburger", "Enter the name of the resturant", "OK", "Forget it", "Type restuarant name here");
-            await HamburgerService.AddHamburger(hamburgerName, restuarantName);
-            await Refresh();
+            
+            //var hamburgerName = await App.Current.MainPage.DisplayPromptAsync
+            //    ("Add Hamburger", "Enter the name of the hamburger", "OK", 
+            //    "Forget it", "Type hamburger name here");
+            //var restuarantName = await App.Current.MainPage.DisplayPromptAsync("Add Hamburger", "Enter the name of the resturant", "OK", "Forget it", "Type restuarant name here");
+            //await HamburgerService.AddHamburger(hamburgerName, restuarantName);
+            //await Refresh();
         }
 
         private async Task LoadMore()

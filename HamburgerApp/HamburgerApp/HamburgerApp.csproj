@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -18,8 +18,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="AddHamburgerPage.xaml.cs">
+      <DependentUpon>AddHamburgerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="HamburgersPage.xaml.cs">
       <DependentUpon>HamburgersPage.xaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="AddHamburgerPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

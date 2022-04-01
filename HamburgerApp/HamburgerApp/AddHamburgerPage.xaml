@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HamburgerApp.AddHamburgerPage"
+             xmlns:viewmodels="clr-namespace:HamburgerApp.ViewModels">
+    <ContentPage.BindingContext>
+        <viewmodels:HamburgerViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid BackgroundColor="{AppThemeBinding Dark={StaticResource AppBackgroundDark}, Light={StaticResource AppBackgroundLight}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Text="Hamburger Name: " FontSize="Medium" VerticalOptions="Center" TextColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}" />
+            <Entry Grid.Column="1" MaxLength="100" BackgroundColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}" />
+
+            <Label Text="Resturant Name: " FontSize="Medium" VerticalOptions="Center" Grid.Row="1" TextColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}"/>
+            <Entry Grid.Column="1" Grid.Row="1" BackgroundColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}"/>
+
+            <Button Text="Add Hamburger" Grid.Row="2" Grid.ColumnSpan="2" WidthRequest="400" BackgroundColor="{StaticResource ButtonColor}" Command="{Binding AddCommand}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
