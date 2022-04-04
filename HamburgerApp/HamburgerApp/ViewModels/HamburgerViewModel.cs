@@ -61,6 +61,8 @@ namespace HamburgerApp.ViewModels
             ThanosCommand = new AsyncCommand(DeleteAllHamburgers);
             NavigateCommand = new AsyncCommand<String>(NavigateToPage);
             //Hamburgers.Add(new Hamburger() { Name = "Butter Burger", RestuarantName = "Culver's", Image = "hamburger.png" });
+
+            Refresh();
         }
 
         private async Task NavigateToPage(String dest)

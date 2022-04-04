@@ -88,7 +88,7 @@
                                             />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <Frame BackgroundColor="{AppThemeBinding Dark=#111111, Light=#FFFFFF}">
+                            <Frame Style="{StaticResource Bg}">
 
                                 <StackLayout Orientation="Horizontal">
                                     <Image 
