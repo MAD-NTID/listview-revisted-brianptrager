@@ -31,13 +31,11 @@ namespace HamburgerApp.Services
         {
             await Init();
             //Promise to discuss about image on Monday
-            var image = "https://people.rit.edu/bptnbs/hamburger.png";
 
             var hamburger = new Hamburger()
             {
                 Name = name,
-                RestuarantName = restuarantName,
-                Image = image
+                RestuarantName = restuarantName
             };
 
             var id = await db.InsertAsync(hamburger);
@@ -79,6 +77,14 @@ namespace HamburgerApp.Services
         {
             await Init();
             await db.DeleteAllAsync<Hamburger>();
+        }
+
+        public static async Task ToggleFavorite(int id)
+        {
+            var hamburger = await GetHamburger(id);
+
+            hamburger.IsFavorite = !hamburger.IsFavorite;
+            await db.UpdateAsync(hamburger);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace HamburgerApp.ViewModels
 
         public AsyncCommand RefreshCommand { get; set; }
         public AsyncCommand<Hamburger> FavoriteCommand { get; set; }
-        public AsyncCommand LoadMoreCommand { get; set; }
+        //public AsyncCommand LoadMoreCommand { get; set; }
         public AsyncCommand AddCommand { get; set; }
         public AsyncCommand<Hamburger> DeleteCommand { get; set; }
         public AsyncCommand ThanosCommand { set; get; }
@@ -54,7 +54,7 @@ namespace HamburgerApp.ViewModels
             HamburgerGroups = new ObservableRangeCollection<Grouping<string, Hamburger>>();
 
             AddCommand = new AsyncCommand(AddHamburger);
-            LoadMoreCommand = new AsyncCommand(LoadMore);
+            //LoadMoreCommand = new AsyncCommand(LoadMore);
             RefreshCommand = new AsyncCommand(Refresh);
             FavoriteCommand = new AsyncCommand<Hamburger>(Favorite);
             DeleteCommand = new AsyncCommand<Hamburger>(DeleteHamburger);
@@ -100,11 +100,12 @@ namespace HamburgerApp.ViewModels
             //await Refresh();
         }
 
-        private async Task LoadMore()
-        {
-            await HamburgerService.AddHamburger("World's Greatest Cheeseburger", "Bill Gray's");
-            await Refresh();
-        }
+        //Deprecated as we no longer need this function
+        //private async Task LoadMore()
+        //{
+        //    await HamburgerService.AddHamburger("World's Greatest Cheeseburger", "Bill Gray's");
+        //    await Refresh();
+        //}
 
         async Task Refresh()
         {
@@ -123,8 +124,8 @@ namespace HamburgerApp.ViewModels
             if (hamburger == null)
                 return;
 
-            await Application.Current.MainPage.DisplayAlert("Selected Hamburger", hamburger.Name, "OK");
-
+            await HamburgerService.ToggleFavorite(hamburger.Id);
+            await Refresh();
         }
     }
 }

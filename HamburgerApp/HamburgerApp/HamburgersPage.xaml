@@ -75,10 +75,10 @@
                         <SwipeView android:SwipeView.SwipeTransitionMode="Drag" BackgroundColor="Transparent">
                             <SwipeView.RightItems>
                                 <SwipeItems>
-
                                     <SwipeItem Text="Favorite"
                                                BackgroundColor="Orange"
-                                               
+                                               Command="{Binding Source={x:Reference HamburgersList}, Path=BindingContext.FavoriteCommand}"
+                                               CommandParameter="{Binding .}"
                                             />
                                     <SwipeItem Text="Delete"
                                                IsDestructive="True"
@@ -97,17 +97,22 @@
                                     WidthRequest="66"
                                     />
                                     <StackLayout VerticalOptions="Center">
-                                        <Label Style="{StaticResource PrimaryFont}"
-                                    Text="{Binding Name}" 
-                                    VerticalOptions="Center"
-                                               TextColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}"
-                                    />
-                                        <Label 
-                                    Text="{Binding RestuarantName}" 
-                                    VerticalOptions="Center"
-                                    FontSize="Medium"
+                                            <Label Style="{StaticResource PrimaryFont}"
+                                            Text="{Binding Name}" 
+                                            VerticalOptions="Center"
+                                            TextColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}"
+                                            />
+                                            <Label 
+                                            Text="{Binding RestuarantName}" 
+                                            VerticalOptions="Center"
+                                            FontSize="Medium"
                                             TextColor="{AppThemeBinding Dark=#EEEEEE, Light=#111111}"/>
                                     </StackLayout>
+                                    <Image
+                                        Source="{Binding FavoriteImage}"
+                                        IsVisible="{Binding IsFavorite}"
+                                        HorizontalOptions="Center"
+                                    />
                                 </StackLayout>
 
                             </Frame>
